@@ -2,30 +2,37 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 const postSchema = mongoose.Schema({
-    caption : {
-        type : String,
-        trim : true,
+    caption: {
+        type: String,
+        trim: true,
     },
-    location : {
-        type : String,
-        trim : true,
-        lowercase : true
+    location: {
+        type: String,
+        trim: true,
+        lowercase: true
     },
-    likes : {
-        type : Number,
-        trim : true,
-        default : 0,
-        validate : (value) => {
-            if(value < 0) {
-                throw new Error('likes must be greater than 0');
+    tags: {
+        type : [String],
+        lowercase: true
+    },
+    comments: [{
+        comment: {
+            type: String,
+            commentBy: {
+                type: mongoose.Schema.Types.ObjectId,
+                require: true,
+                ref: 'User'
             }
         }
-    },
-    postedBy : {
-        type : mongoose.Schema.Types.ObjectId,
-        require : true,
-        ref : 'User'
+    }],
+    postedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        require: true,
+        ref: 'User'
     }
-}, {timestams : true})
+}, { timestams: true })
 
-module.exports = mongoose.model('Post', postSchema)
+
+const Post = mongoose.model('Post', postSchema);
+
+module.exports = Post

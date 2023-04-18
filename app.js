@@ -14,6 +14,7 @@ app.use(morgan('dev'))
 app.use(express.json());
 app.use(express.urlencoded({extended : false}))
 
+//routes
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
 app.use('/query', queryRoutes);

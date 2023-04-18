@@ -11,7 +11,7 @@ router.get('/', auth, userController.viewProfile)
 
 router.post('/', userController.createProfile)
 
-router.put('/',auth,userController.updateProfile)
+router.patch('/',auth,userController.updateProfile)
 
 router.delete('/', auth, userController.deleteProfile)
 
