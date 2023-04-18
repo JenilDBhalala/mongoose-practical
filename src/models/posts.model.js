@@ -18,11 +18,15 @@ const postSchema = mongoose.Schema({
     comments: [{
         comment: {
             type: String,
-            commentBy: {
-                type: mongoose.Schema.Types.ObjectId,
-                require: true,
-                ref: 'User'
-            }
+        },
+        commentBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            require: true,
+            ref: 'User'
+        },
+        commentDate: {
+            type: Date,
+            default: Date.now()
         }
     }],
     postedBy: {
@@ -30,7 +34,7 @@ const postSchema = mongoose.Schema({
         require: true,
         ref: 'User'
     }
-}, { timestams: true })
+}, { timestamps: true })
 
 
 const Post = mongoose.model('Post', postSchema);

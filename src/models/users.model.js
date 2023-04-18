@@ -45,7 +45,7 @@ const userSchema = mongoose.Schema({
             type: String
         }
     }]
-}, {timestams : true})
+}, {timestamps : true})
 
 
 //hiding private data
