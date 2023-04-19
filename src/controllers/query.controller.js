@@ -2,13 +2,8 @@ const User = require('../models/users.model');
 const Post = require('../models/posts.model');
 const mongoose = require('mongoose')
 
-//finding latest comments on specific post : pagination with aggregation
 const findLatestComments = async (req, res, next) => {
     try {
-        //pagination using find method with populate 
-        // const comments = await Post.find({_id : req.params.id}, {_id : 0, caption: 0, location: 0, postedBy : 0, tags:0, comments : {$slice : [+req.query.skip, +req.query.limit]}})
-        // .populate('comments.commentBy', {_id : 0, username : 1})
-
         //finding latest comments using aggregate pipeline with pagination, sorting and projection
         const comments = await Post.aggregate([
             {
@@ -53,10 +48,23 @@ const findLatestComments = async (req, res, next) => {
     catch (err) {
         next(err)
     }
-
 }
 
 
+const searchUsernames = async (req, res, next) => {
+    try {
+        const users = await User.find({ username: { $regex: req.query.search, $options: 'i' } }, { createdAt: 0, updatedAt: 0, __v: 0 });
+        if (users.length === 0) {
+            return res.status(404).json({ error: 'No users found!' })
+        }
+        res.status(200).json({ data: users })
+    }
+    catch (err) {
+        next(err)
+    }
+}
+
 module.exports = {
-    findLatestComments
+    findLatestComments,
+    searchUsernames
 }
