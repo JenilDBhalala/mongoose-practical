@@ -91,7 +91,7 @@ const fetchAllCommentsOnPost = async (req, res, next) => {
     try {
         const {comments} = await Post.findById(req.params.id)
                                      .populate('comments.commentBy',{_id : 0, username : 1});
-                                     
+                           
         if(comments.length === 0){
             return res.status(404).json({error : 'There is no comment on post currently!'})
         }

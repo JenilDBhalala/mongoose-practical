@@ -3,6 +3,6 @@ const router = express.Router();
 const queryController = require('../controllers/query.controller')
 const auth = require('../middlewares/auth')
 
-router.get('/posts/:id/comment', auth, queryController.findCommentsOfLast4Days)
+router.get('/posts/:id/comment', auth, queryController.findLatestComments)
 
 module.exports = router;
