@@ -17,7 +17,7 @@ app.use(express.urlencoded({extended : false}))
 //routes
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
-app.use('/query', queryRoutes);
+app.use('/queries', queryRoutes);
 
 //error handler middleware
 app.use((error, req, res, next) => {
