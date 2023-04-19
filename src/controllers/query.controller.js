@@ -50,8 +50,7 @@ const findLatestComments = async (req, res, next) => {
     }
 }
 
-
-const searchUsernames = async (req, res, next) => {
+const searchByUsername = async (req, res, next) => {
     try {
         const users = await User.find({ username: { $regex: req.query.search, $options: 'i' } }, { createdAt: 0, updatedAt: 0, __v: 0 });
         if (users.length === 0) {
@@ -64,7 +63,30 @@ const searchUsernames = async (req, res, next) => {
     }
 }
 
+//finding counts of post with specific tag 
+const countOfPosts = async (req, res, next) => {
+    try {
+        const posts = await Post.aggregate([
+            {
+                $unwind : '$tags'
+            },
+            {
+                $group : {_id : "$tag", count : {$sum : 1}}
+            }
+        ]);
+        console.log(posts)
+        if (posts.length === 0) {
+            return res.status(404).json({ error: 'No posts found!' })
+        }
+        res.status(200).json({ data: posts })
+    }
+    catch (err) {
+        next(err)
+    }
+}
+
 module.exports = {
     findLatestComments,
-    searchUsernames
+    searchByUsername,
+    countOfPosts
 }
