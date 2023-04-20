@@ -53,13 +53,8 @@ const updateProfile = async (body, user) => {
 
 
 const deleteProfile = async (user) => {
-    try {
-        await Post.deleteMany({ postedBy: user._id })
-        await User.deleteOne({ email: user.email })
-    }
-    catch (err) {
-        next(err)
-    }
+    await Post.deleteMany({ postedBy: user._id })
+    await User.deleteOne({ email: user.email })
 }
 
 

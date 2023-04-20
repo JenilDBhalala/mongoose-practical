@@ -36,7 +36,7 @@ const addPost = async (req, res, next) => {
 const updatePost = async (req, res, next) => {
     try {
         const message = await postService.updatePost(req.body, req.params)
-        res.status(200).json({ message })
+        res.status(200).json({ message : 'Post updated successfully' })
     }
     catch (err) {
         next(err)
@@ -47,7 +47,7 @@ const updatePost = async (req, res, next) => {
 const deletePost = async (req, res, next) => {
     try {
         const message = await postService.deletePost(req.user, req.params)
-        res.status(200).json({ message })
+        res.status(200).json({ message : 'Post deleted successfully' })
     }
     catch (err) {
         next(err)

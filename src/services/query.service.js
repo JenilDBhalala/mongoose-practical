@@ -17,7 +17,7 @@ const findLatestComments = async (params, query) => {
                 from: 'users',
                 localField: 'comments.commentBy',
                 foreignField: '_id',
-                as: 'comments.commentBy'
+                as: 'comments.abc'
             }
         },
         {
@@ -30,10 +30,15 @@ const findLatestComments = async (params, query) => {
             $limit: isNaN(+query.limit) ? 5 : +query.limit
         },
         {
+            $addFields : {
+                'comments.user': {$first : "$comments.abc"},
+            }
+        },
+        {
             $project: {
                 _id: 0,
                 'comments.comment': 1,
-                'comments.commentBy.username': 1,
+                'comments.commentBy': '$comments.user.username',
                 'comments.commentDate': 1
             }
         }

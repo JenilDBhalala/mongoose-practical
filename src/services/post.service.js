@@ -38,8 +38,6 @@ const updatePost = async (body, params) => {
     await post.updateOne({
         ...body
     }, { runValidators: true });
-
-    return `Post updated successfully`
 }
 
 
@@ -50,7 +48,6 @@ const deletePost = async (user, params) => {
         throw new NotFoundError('post not found!');
 
     post.deleteOne();
-    return `Post deleted successfully`
 }
 
 
