@@ -21,7 +21,7 @@ app.use('/queries', queryRoutes);
 
 //error handler middleware
 app.use((error, req, res, next) => {
-    res.status(500).json({ message: error.message });
+    res.status(error.status || 400).json({ error: error.message });
 });
 
 //server configuration

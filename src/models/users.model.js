@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator')
+const {BadRequest} = require('../error')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 
