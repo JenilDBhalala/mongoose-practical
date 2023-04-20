@@ -2,9 +2,9 @@ const User = require('../models/users.model');
 const Post = require('../models/posts.model');
 const mongoose = require('mongoose')
 
+//finding latest comments using aggregate pipeline with pagination, sorting and projection
 const findLatestComments = async (req, res, next) => {
     try {
-        //finding latest comments using aggregate pipeline with pagination, sorting and projection
         const comments = await Post.aggregate([
             {
                 $match: { _id: new mongoose.Types.ObjectId(req.params.id) }
@@ -50,6 +50,7 @@ const findLatestComments = async (req, res, next) => {
     }
 }
 
+
 const searchByUsername = async (req, res, next) => {
     try {
         const users = await User.find({ username: { $regex: req.query.search, $options: 'i' } }, { createdAt: 0, updatedAt: 0, __v: 0 });
@@ -71,10 +72,9 @@ const countOfPosts = async (req, res, next) => {
                 $unwind : '$tags'
             },
             {
-                $group : {_id : "$tag", count : {$sum : 1}}
+                $group : {_id : "$tags", count : {$sum : 1}}
             }
         ]);
-        console.log(posts)
         if (posts.length === 0) {
             return res.status(404).json({ error: 'No posts found!' })
         }
