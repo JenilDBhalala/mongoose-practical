@@ -1,6 +1,12 @@
 const Post = require('../models/posts.model')
 const { NotFoundError } = require('../error')
 
+/**
+ * Fetches all posts created by a user.
+ * @param {Object} user - The user object.
+ * @returns {Promise<Array>} An array of posts.
+ * @throws {NotFoundError} If no posts are found.
+ */
 const fetchAllPosts = async (user) => {
     const posts = await Post.find({ postedBy: user._id });
 
@@ -10,6 +16,14 @@ const fetchAllPosts = async (user) => {
     return posts;
 }
 
+
+/**
+ * Fetches a post by ID that was created by a user.
+ * @param {Object} user - The user object.
+ * @param {Object} params - The request params.
+ * @returns {Promise<Object>} The post object.
+ * @throws {NotFoundError} If the post is not found.
+ */
 const fetchPostById = async (user, params) => {
     const post = await Post.findOne({ postedBy: user._id, _id: params.id });
 
@@ -19,7 +33,12 @@ const fetchPostById = async (user, params) => {
     return post;
 }
 
-
+/**
+ * Creates a new post.
+ * @param {Object} body - The request body.
+ * @param {Object} user - The user object.
+ * @returns {Promise<Object>} The post object.
+ */
 const addPost = async (body, user) => {
     const post = await Post.create({
         ...body,
@@ -28,7 +47,13 @@ const addPost = async (body, user) => {
     return post;
 }
 
-
+/**
+ * Updates a post by ID.
+ * @param {Object} body - The request body.
+ * @param {Object} params - The request parameters.
+ * @returns {Promise<void>}
+ * @throws {NotFoundError} If the post is not found.
+ */
 const updatePost = async (body, params) => {
     const post = await Post.findById(params.id);
 
@@ -40,7 +65,13 @@ const updatePost = async (body, params) => {
     }, { runValidators: true });
 }
 
-
+/**
+ * Deletes a post by ID.
+ * @param {Object} user - The user object.
+ * @param {Object} params - The request parameters.
+ * @returns {Promise<void>}
+ * @throws {NotFoundError} If the post is not found.
+ */
 const deletePost = async (user, params) => {
     const post = await Post.findOne({ postedBy: user._id, _id: params.id });
 
@@ -51,6 +82,14 @@ const deletePost = async (user, params) => {
 }
 
 
+/**
+ * Adds a comment to a post by ID.
+ * @param {Object} params - The request parameters.
+ * @param {Object} body - The request body.
+ * @param {Object} user - The user object.
+ * @returns {Promise<Object>} The updated post object.
+ * @throws {NotFoundError} If the post is not found.
+ */
 const addComment = async (params, body, user) => {
     const post = await Post.findById(params.id);
 
@@ -65,6 +104,12 @@ const addComment = async (params, body, user) => {
 }
 
 
+/**
+ * Fetches all comments on a post by ID.
+ * @param {Object} params - The request parameters.
+ * @returns {Promise<Array>} An array of comment objects.
+ * @throws {NotFoundError} If there are no comments on the post.
+ */
 const fetchAllCommentsOnPost = async (params) => {
     const { comments } = await Post.findById(params.id)
         .populate('comments.commentBy', { _id: 0, username: 1 });

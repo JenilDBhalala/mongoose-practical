@@ -3,7 +3,13 @@ const Post = require('../models/posts.model');
 const mongoose = require('mongoose')
 const { NotFoundError } = require('../error')
 
-//finding latest comments using aggregate pipeline with pagination, sorting and projection
+/**
+ * Finds latest comments on a post using aggregate pipeline
+ * @param {Object} params - The object containing the ID of the post.
+ * @param {Object} query - The object containing the pagination parameters (skip and limit).
+ * @returns {Promise<Array>} - A promise that resolves to an array of comments.
+ * @throws {NotFoundError} - If there are no comments on the post.
+ */
 const findLatestComments = async (params, query) => {
     const comments = await Post.aggregate([
         {
@@ -52,6 +58,12 @@ const findLatestComments = async (params, query) => {
 }
 
 
+/**
+ * Search for users by their username.
+ * @param {Object} query - The search query object.
+ * @returns {Promise<Array>} An array of user objects that match the search query.
+ * @throws {NotFoundError} If no users are found.
+ */
 const searchByUsername = async (query) => {
     const users = await User.find(
         {
@@ -72,7 +84,11 @@ const searchByUsername = async (query) => {
 }
 
 
-//finding counts of post with specific tag 
+/**
+ * Counts the number of posts based on their tags
+ * @returns {Promise<Array>} Array of objects containing tag and count of posts for each tag
+ * @throws {NotFoundError} If no posts are found
+ */
 const countOfPosts = async () => {
     const posts = await Post.aggregate([
         {
