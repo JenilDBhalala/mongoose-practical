@@ -24,10 +24,15 @@ app.use((error, req, res, next) => {
     res.status(500).json({ message: error.message });
 });
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./docs");
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 //server configuration
 const host = process.env.HOST;
-const port = process.env.PORT || 3002
+const port = process.env.PORT || 3002;
 
 app.listen(port, host, () => {
-    console.log(`app is listening on http://${host}:${port}`);
-})
+  console.log(`app is listening on http://localhost:${port}`);
+});
