@@ -1,52 +1,60 @@
 module.exports = {
-  parameters: [
-    {
-      name: "id",
-      in: "path",
-      required: true,
-      description: "id of post that we want to update",
-      type: "integer",
-    },
-  ],
   patch: {
     tags: ["Post"],
     summary: "update post",
+    parameters: [
+      {
+        name: "postId",
+        in: "path",
+        required: true,
+        description: "id of post that we want to update",
+        type: "integer",
+      },
+    ],
     requestBody: {
       content: {
         "application/json": {
           schema: {
-            type: "object",
-            example: {
-              caption: "this is new post!",
-              location: "nadiad",
-              tags: ["ddu", "nadiad", "collegeroad"],
-            },
+            $ref: "#/components/schemas/updatePost",
           },
         },
       },
     },
     responses: {
       200: {
-        description: "Successful response",
+        description: "Successful Response",
         content: {
           "application/json": {
             schema: {
               type: "object",
               example: {
-                message: "post updated successfully!",
+                message: "post updated successfully",
+              },
+            },
+          },
+        },
+      },
+      404: {
+        description: "Not found",
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              example: {
+                error: "posts with this id not found!",
               },
             },
           },
         },
       },
       500: {
-        description: "Jwt not found",
+        description: "Internal Server Error",
         content: {
           "application/json": {
             schema: {
               type: "object",
               example: {
-                message: "jwt malformed",
+                message: "Invalid signature",
               },
             },
           },

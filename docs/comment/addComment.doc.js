@@ -1,16 +1,25 @@
 module.exports = {
-  get: {
-    tags: ["Post"],
-    summary: "fetch post by id",
+  patch: {
+    tags: ["Comment"],
+    summary: "add comment on post",
     parameters: [
       {
         name: "postId",
         in: "path",
         required: true,
-        description: "id of post that we want to find",
+        description: "id of post on which you want to add comment",
         type: "string",
       },
     ],
+    requestBody: {
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/addCommentOnPost",
+          },
+        },
+      },
+    },
     responses: {
       200: {
         description: "Successful response",
@@ -20,29 +29,23 @@ module.exports = {
               type: "object",
               example: {
                 data: {
-                  _id: "64816bf4790bfe36a04ad341",
+                  _id: "6481868b3028b0de11930fdb",
                   caption: "this is new post!",
                   location: "nadiad",
                   tags: ["ddu", "nadiad", "collegeroad"],
-                  postedBy: "643f92e8307bfa28ce132c62",
-                  comments: [],
-                  createdAt: "2023-06-08T05:49:40.980Z",
-                  updatedAt: "2023-06-08T05:49:40.980Z",
-                  __v: 0,
+                  postedBy: "648174ae2926ad550d3312c7",
+                  comments: [
+                    {
+                      comment: "hello!!",
+                      commentBy: "648174ae2926ad550d3312c7",
+                      commentDate: "2023-06-08T07:42:55.097Z",
+                      _id: "648186a73028b0de11930fe0",
+                    },
+                  ],
+                  createdAt: "2023-06-08T07:43:07.279Z",
+                  updatedAt: "2023-06-08T07:43:35.168Z",
+                  __v: 1,
                 },
-              },
-            },
-          },
-        },
-      },
-      404: {
-        description: "Not found",
-        content: {
-          "application/json": {
-            schema: {
-              type: "object",
-              example: {
-                error: "post with this id not found!",
               },
             },
           },

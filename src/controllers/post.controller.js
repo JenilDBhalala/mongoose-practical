@@ -46,10 +46,13 @@ const updatePost = async (req, res, next) => {
         if (!post) {
             return res.status(404).json({ error: 'post not found!' })
         }
-        await post.updateOne({
-            ...req.body
-        }, { runValidators: true });
-        res.status(200).json({ message: 'post updated successfully!' })
+        await post.updateOne(
+          {
+            ...req.body,
+          },
+          { runValidators: true }
+        );
+        res.status(200).json({ message: "post updated successfully" });
     }
     catch (err) {
         next(err)

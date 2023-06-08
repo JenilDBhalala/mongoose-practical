@@ -1,38 +1,29 @@
 module.exports = {
-  delete: {
-    tags: ["Post"],
-    summary: "delete post",
-    parameters: [
-      {
-        name: "postId",
-        in: "path",
-        required: true,
-        description: "id of post that we want to delete",
-        type: "interger",
-      },
-    ],
+  post: {
+    tags: ["User"],
+    summary: "logout user",
     responses: {
       200: {
-        description: "Successful Response",
+        description: "Successful response",
         content: {
           "application/json": {
             schema: {
               type: "object",
               example: {
-                message: "post deleted successfully",
+                message: "user logged out successfully",
               },
             },
           },
         },
       },
-      404: {
-        description: "Not found",
+      401: {
+        description: "Unauthorized",
         content: {
           "application/json": {
             schema: {
               type: "object",
               example: {
-                error: "posts with this id not found!",
+                error: "Please Authenticate!",
               },
             },
           },
@@ -45,7 +36,7 @@ module.exports = {
             schema: {
               type: "object",
               example: {
-                message: "Invalid signature",
+                message: "invalid signature",
               },
             },
           },

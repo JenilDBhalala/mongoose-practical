@@ -1,16 +1,7 @@
 module.exports = {
-  delete: {
-    tags: ["Post"],
-    summary: "delete post",
-    parameters: [
-      {
-        name: "postId",
-        in: "path",
-        required: true,
-        description: "id of post that we want to delete",
-        type: "interger",
-      },
-    ],
+  get: {
+    tags: ["Query"],
+    summary: "count posts by hashtags",
     responses: {
       200: {
         description: "Successful Response",
@@ -19,20 +10,37 @@ module.exports = {
             schema: {
               type: "object",
               example: {
-                message: "post deleted successfully",
+                data: [
+                  {
+                    _id: "explorepage",
+                    count: 1,
+                  },
+                  {
+                    _id: "paris",
+                    count: 1,
+                  },
+                  {
+                    _id: "collegelife",
+                    count: 1,
+                  },
+                  {
+                    _id: "nature",
+                    count: 1,
+                  },
+                ],
               },
             },
           },
         },
       },
       404: {
-        description: "Not found",
+        description: "Not Found",
         content: {
           "application/json": {
             schema: {
               type: "object",
               example: {
-                error: "posts with this id not found!",
+                error: "No posts found!",
               },
             },
           },

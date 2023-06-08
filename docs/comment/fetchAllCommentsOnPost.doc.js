@@ -1,25 +1,34 @@
 module.exports = {
-  delete: {
-    tags: ["Post"],
-    summary: "delete post",
+  get: {
+    tags: ["Comment"],
+    summary: "fetch all comments on specific post",
     parameters: [
       {
         name: "postId",
         in: "path",
         required: true,
-        description: "id of post that we want to delete",
-        type: "interger",
+        description: "id of post on which you want to find comments",
+        type: "string",
       },
     ],
     responses: {
       200: {
-        description: "Successful Response",
+        description: "Successful response",
         content: {
           "application/json": {
             schema: {
               type: "object",
               example: {
-                message: "post deleted successfully",
+                data: [
+                  {
+                    comment: "hello!!",
+                    commentBy: {
+                      username: "jenilbhalala",
+                    },
+                    commentDate: "2023-06-08T07:42:55.097Z",
+                    _id: "648186a73028b0de11930fe0",
+                  },
+                ],
               },
             },
           },
@@ -32,7 +41,7 @@ module.exports = {
             schema: {
               type: "object",
               example: {
-                error: "posts with this id not found!",
+                error: "There is no comment on post currently!",
               },
             },
           },

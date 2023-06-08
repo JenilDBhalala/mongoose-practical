@@ -49,7 +49,7 @@ const viewProfile = async (req, res, next) => {
 }
 
 const updateProfile = async (req, res, next) => {
-    const allowedUpdates = ['username', 'email', 'password', 'age'];
+    const allowedUpdates = ["username", "password", "age"];
     const updates = Object.keys(req.body);
 
     const isValidUpdate = updates.every((update) => allowedUpdates.includes(update));
