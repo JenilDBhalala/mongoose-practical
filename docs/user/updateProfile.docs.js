@@ -23,13 +23,13 @@ module.exports = {
               type: "object",
               example: {
                 data: {
-                  _id: "648174ae2926ad550d3312c7",
+                  _id: "6482c014fc015ca25f03d9eb",
                   username: "jenilbhalala",
                   email: "jenil12@gmail.com",
-                  age: 22,
-                  createdAt: "2023-06-08T06:26:54.292Z",
-                  updatedAt: "2023-06-08T06:37:07.154Z",
-                  __v: 1,
+                  age: 21,
+                  createdAt: "2023-06-09T06:00:52.902Z",
+                  updatedAt: "2023-06-09T06:02:49.612Z",
+                  __v: 2,
                 },
               },
             },

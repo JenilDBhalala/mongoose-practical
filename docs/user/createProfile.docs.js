@@ -19,17 +19,19 @@ module.exports = {
             schema: {
               type: "object",
               example: {
-                user: {
-                  username: "jenil.bhalala",
-                  email: "jenil12@gmail.com",
-                  age: 19,
-                  _id: "648174ae2926ad550d3312c7",
-                  createdAt: "2023-06-08T06:26:54.292Z",
-                  updatedAt: "2023-06-08T06:26:54.577Z",
-                  __v: 1,
+                data: {
+                  user: {
+                    username: "jenil.bhalala",
+                    email: "jenil12@gmail.com",
+                    age: 19,
+                    _id: "6482c014fc015ca25f03d9eb",
+                    createdAt: "2023-06-09T06:00:52.902Z",
+                    updatedAt: "2023-06-09T06:00:53.185Z",
+                    __v: 1,
+                  },
+                  token:
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODJjMDE0ZmMwMTVjYTI1ZjAzZDllYiIsImlhdCI6MTY4NjI5MDQ1M30.wXtxybR1Mw3oUuNPWJWkYLxhBGpniazLoAfuOOTG6z0",
                 },
-                token:
-                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODE3NGFlMjkyNmFkNTUwZDMzMTJjNyIsImlhdCI6MTY4NjIwNTYxNH0.bwYvBjHXXETOkCmQX-Xgs13bYsD5INw2tyhrB_GzmIQ",
               },
             },
           },
