@@ -1,4 +1,5 @@
-import { IPost, IUser, Post } from "../models";
+import { IComment, IPost, Post } from "../models/posts.model";
+import { IUser } from "../models/users.model";
 import { NotFoundError } from "../error";
 
 /**
@@ -7,7 +8,7 @@ import { NotFoundError } from "../error";
  * @returns {Promise<Array>} An array of posts.
  * @throws {NotFoundError} If no posts are found.
  */
-const fetchAllPosts = async (user: IUser) => {
+export const fetchAllPosts = async (user: IUser) => {
   const posts = await Post.find({ postedBy: user._id });
 
   if (posts.length === 0) throw new NotFoundError("posts not found!");
@@ -22,7 +23,7 @@ const fetchAllPosts = async (user: IUser) => {
  * @returns {Promise<Object>} The post object.
  * @throws {NotFoundError} If the post is not found.
  */
-const fetchPostById = async (user: IUser, id: number) => {
+export const fetchPostById = async (user: IUser, id: string) => {
   const post = await Post.findOne({ postedBy: user._id, _id: id });
 
   if (!post) throw new NotFoundError("post not found!");
@@ -36,7 +37,7 @@ const fetchPostById = async (user: IUser, id: number) => {
  * @param {Object} user - The user object.
  * @returns {Promise<Object>} The post object.
  */
-const addPost = async (body: Partial<IPost>, user) => {
+export const addPost = async (body: IPost, user : IUser) => {
   const post = await Post.create({
     ...body,
     postedBy: user._id,
@@ -51,8 +52,8 @@ const addPost = async (body: Partial<IPost>, user) => {
  * @returns {Promise<void>}
  * @throws {NotFoundError} If the post is not found.
  */
-const updatePost = async (body, params) => {
-  const post = await Post.findById(params.id);
+export const updatePost = async (body : IPost, id : string) => {
+  const post = await Post.findById(id);
 
   if (!post) {
     throw new NotFoundError("post not found!");
@@ -72,8 +73,8 @@ const updatePost = async (body, params) => {
  * @returns {Promise<void>}
  * @throws {NotFoundError} If the post is not found.
  */
-const deletePost = async (user, params) => {
-  const post = await Post.findOne({ postedBy: user._id, _id: params.id });
+export const deletePost = async (user : IUser, id : string) => {
+  const post = await Post.findOne({ postedBy: user._id, _id: id });
 
   if (!post) throw new NotFoundError("post not found!");
 
@@ -88,8 +89,8 @@ const deletePost = async (user, params) => {
  * @returns {Promise<Object>} The updated post object.
  * @throws {NotFoundError} If the post is not found.
  */
-const addComment = async (params, body, user) => {
-  const post = await Post.findById(params.id);
+export const addComment = async (id : string, body : IComment, user : IUser) => {
+  const post = await Post.findById(id);
 
   if (!post) {
     throw new NotFoundError("post not found!");
@@ -107,24 +108,15 @@ const addComment = async (params, body, user) => {
  * @returns {Promise<Array>} An array of comment objects.
  * @throws {NotFoundError} If there are no comments on the post.
  */
-const fetchAllCommentsOnPost = async (params) => {
-  const { comments } = await Post.findById(params.id).populate(
+export const fetchAllCommentsOnPost = async (id : string) => {
+  const post = await Post.findById(id).populate(
     "comments.commentBy",
     { _id: 0, username: 1 }
   );
 
-  if (comments.length === 0) {
+  if (!post || post.comments.length === 0) {
     throw new NotFoundError("There is no comment on post currently!");
   }
-  return comments;
+  return post.comments;
 };
 
-module.exports = {
-  addPost,
-  updatePost,
-  fetchAllPosts,
-  fetchPostById,
-  deletePost,
-  addComment,
-  fetchAllCommentsOnPost,
-};

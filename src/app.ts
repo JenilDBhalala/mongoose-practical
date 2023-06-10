@@ -1,12 +1,11 @@
-const morgan = require("morgan");
-require("dotenv").config();
-require("./config/db");
-import { Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from "express"
+import morgan from "morgan";
+import dotenv from "dotenv"
+dotenv.config()
+import {connectToDB} from "./config/db";
 
 //importing routes
-const userRoutes = require("./src/routes/user.route");
-const postRoutes = require("./src/routes/post.route");
-const queryRoutes = require("./src/routes/query.route");
+import { userRoutes, postRoutes, queryRoutes } from "./routes";
 
 const app = express();
 app.use(morgan("dev"));
@@ -19,12 +18,15 @@ app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 app.use("/queries", queryRoutes);
 
-// //error handler middleware
-// app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-//   res.status(error.status || 400).json({ error: error.message });
-// });
+//error handler middlewares
+app.use((error: Error & {status? : number}, req: Request, res: Response, next: NextFunction) => {
+  res.status(error.status || 400).json({ error: error.message });
+});
 
 //server configuration
+
+console.log("hello2")
+connectToDB()
 const port = process.env.PORT || 3002;
 
 app.listen(port, () => {

@@ -1,10 +1,11 @@
-const express = require('express');
+import express from "express";
+import * as queryController from "../controllers/query.controller";
+import { auth } from "../middlewares/auth";
+
 const router = express.Router();
-const queryController = require('../controllers/query.controller')
-const auth = require('../middlewares/auth')
 
-router.get('/posts/:id/comment', auth, queryController.findLatestComments)
-router.get('/users/', queryController.searchByUsername)
-router.get('/posts/', queryController.countOfPosts)
+router.get("/posts/:id/comment", auth, queryController.findLatestComments);
+router.get("/users/", queryController.searchByUsername);
+router.get("/posts/", queryController.countOfPosts);
 
-module.exports = router;
+export default router;

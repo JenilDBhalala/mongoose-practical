@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { User } from "../models";
+import { IUser, User } from "../models/users.model";
 
 export interface RequestWithUserAndToken extends Request {
-  user?: string | JwtPayload;
+  user?: IUser;
   token?: string;
 }
 
-const auth = async (
+export const auth = async (
   req: RequestWithUserAndToken,
   res: Response,
   next: NextFunction
@@ -35,5 +35,3 @@ const auth = async (
     next(err);
   }
 };
-
-module.exports = auth;

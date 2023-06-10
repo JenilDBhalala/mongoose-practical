@@ -1,9 +1,12 @@
-const userService = require('../services/user.service');
+import { Request, Response, NextFunction } from "express";
+import { RequestWithUserAndToken } from "../middlewares/auth";
+import * as userService from "../services/user.service";
+import { IUser } from "../models/users.model";
 
-const loginUser = async (req, res, next) => {
+export const loginUser = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const userData = await userService.loginUser(req.body.email, req.body.password);
-        res.status(200).json({ userData })
+        const data = await userService.loginUser(req.body.email, req.body.password);
+        res.status(200).json({ data })
     }
     catch (err) {
         next(err)
@@ -11,9 +14,9 @@ const loginUser = async (req, res, next) => {
 }
 
 
-const logoutUser = async (req, res, next) => {
+export const logoutUser = async (req:RequestWithUserAndToken, res:Response, next:NextFunction) => {
     try {
-        await userService.logoutUser(req.user);
+        await userService.logoutUser(req.user as IUser, req.token as string);
         res.status(200).json({ message: 'user logged out successfully' })
     }
     catch (err) {
@@ -22,26 +25,25 @@ const logoutUser = async (req, res, next) => {
 }
 
 
-const createProfile = async (req, res, next) => {
+export const createProfile = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const userData = await userService.createProfile(req.body);
-        res.status(201).json({ userData });
+        const data = await userService.createProfile(req.body);
+        res.status(201).json({ data });
     }
     catch (err) {
-        console.log("sdflksdflkjksdfdsffg-0---------sd-f4-3-4w5-34-")
         next(err)
     }
 }
 
 
-const viewProfile = async (req, res, next) => {
+export const viewProfile = async (req: RequestWithUserAndToken, res:Response, next:NextFunction) => {
     res.status(200).json({ data: req.user })
 }
 
 
-const updateProfile = async (req, res, next) => {
+export const updateProfile = async (req: RequestWithUserAndToken, res:Response, next:NextFunction) => {
     try{
-        const updatedUser = await userService.updateProfile(req.body, req.user)
+        const updatedUser = await userService.updateProfile(req.body, req.user as IUser)
         res.status(200).json({ data: updatedUser });
     }
     catch (err) {
@@ -50,22 +52,12 @@ const updateProfile = async (req, res, next) => {
 }
 
 
-const deleteProfile = async (req, res, next) => {
+export const deleteProfile = async (req:RequestWithUserAndToken, res:Response, next:NextFunction) => {
     try {
-        await userService.deleteProfile(req.user);
+        await userService.deleteProfile(req.user as IUser);
         res.status(200).json({ message: 'user deleted successfully' })
     }
     catch (err) {
         next(err)
     }
-}
-
-
-module.exports = {
-    createProfile,
-    viewProfile,
-    updateProfile,
-    deleteProfile,
-    loginUser,
-    logoutUser
 }

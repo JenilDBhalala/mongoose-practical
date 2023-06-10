@@ -1,39 +1,47 @@
-const queryService = require('../services/query.service')
+import { NextFunction, Request, Response } from "express";
+import * as queryService from "../services/query.service";
 
 //finding latest comments using aggregate pipeline with pagination, sorting and projection
-const findLatestComments = async (req, res, next) => {
-    try {
-        const comments = await queryService.findLatestComments(req.params, req.query)
-        res.status(200).json({ data: comments })
-    }
-    catch (err) {
-        next(err)
-    }
-}
+export const findLatestComments = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const comments = await queryService.findLatestComments(
+      req.params.id,
+      req.query.skip as string,
+      req.query.limit as string
+    );
+    res.status(200).json({ data: comments });
+  } catch (err) {
+    next(err);
+  }
+};
 
-const searchByUsername = async (req, res, next) => {
-    try {
-        const users = await queryService.searchByUsername(req.query)
-        res.status(200).json({ data: users })
-    }
-    catch (err) {
-        next(err)
-    }
-}
+export const searchByUsername = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const users = await queryService.searchByUsername(req.query.search as string);
+    res.status(200).json({ data: users });
+  } catch (err) {
+    next(err);
+  }
+};
 
-//finding counts of post with specific tag 
-const countOfPosts = async (req, res, next) => {
-    try {
-        const posts = await queryService.countOfPosts();
-        res.status(200).json({ data: posts });
-    }
-    catch (err) {
-        next(err)
-    }
-}
-
-module.exports = {
-    findLatestComments,
-    searchByUsername,
-    countOfPosts
-}
+//finding counts of post with specific tag
+export const countOfPosts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const posts = await queryService.countOfPosts();
+    res.status(200).json({ data: posts });
+  } catch (err) {
+    next(err);
+  }
+};

@@ -1,7 +1,8 @@
-const express = require('express');
+import express from "express"
+import * as userController from "../controllers/user.controller";
+import { auth } from "../middlewares/auth";
+
 const router = express.Router();
-const userController = require('../controllers/user.controller')
-const auth = require('../middlewares/auth')
 
 router.post('/auth/login', userController.loginUser)
 
@@ -15,4 +16,4 @@ router.patch('/me',auth,userController.updateProfile)
 
 router.delete('/me', auth, userController.deleteProfile)
 
-module.exports = router;
+export default router;

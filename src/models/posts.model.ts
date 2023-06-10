@@ -1,23 +1,14 @@
 import mongoose, { Document } from "mongoose";
 
-// export interface IPost extends Document {
-//   caption: string;
-//   location: string;
-//   tags: string[];
-//   comments: {
-//     comment: {
-//       type: string;
-//     };
-//     commentBy: {
-//       type: string;
-//     };
-//     commentDate: {
-//       type: Date;
-//     };
-//   }[];
-// }
+export interface IPost extends Document {
+  comments : object[]
+}
 
-export const postSchema = new mongoose.Schema(
+export interface IComment {
+  comment: string;
+}
+
+const postSchema = new mongoose.Schema(
   {
     caption: {
       type: String,
@@ -57,4 +48,4 @@ export const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Post = mongoose.model("Post", postSchema);
+export const Post = mongoose.model<IPost>("Post", postSchema);

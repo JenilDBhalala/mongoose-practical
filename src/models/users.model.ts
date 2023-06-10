@@ -4,12 +4,12 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export interface IUser extends Document {
-  username: string;
-  email: string;
-  password: string;
-  age: number;
-  tokens: { token: string }[];
-  generateAuthToken: () => Promise<string>;
+  username?: string;
+  email?: string;
+  password?: string;
+  age?: number;
+  tokens?: { token: string }[];
+  generateAuthToken?: () => Promise<string>;
   [key: string]: any;
 }
 

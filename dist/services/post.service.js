@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,8 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Post } from "../models";
-import { NotFoundError } from "../error";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.fetchAllCommentsOnPost = exports.addComment = exports.deletePost = exports.updatePost = exports.addPost = exports.fetchPostById = exports.fetchAllPosts = void 0;
+const posts_model_1 = require("../models/posts.model");
+const error_1 = require("../error");
 /**
  * Fetches all posts created by a user.
  * @param {Object} user - The user object.
@@ -16,11 +19,12 @@ import { NotFoundError } from "../error";
  * @throws {NotFoundError} If no posts are found.
  */
 const fetchAllPosts = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    const posts = yield Post.find({ postedBy: user._id });
+    const posts = yield posts_model_1.Post.find({ postedBy: user._id });
     if (posts.length === 0)
-        throw new NotFoundError("posts not found!");
+        throw new error_1.NotFoundError("posts not found!");
     return posts;
 });
+exports.fetchAllPosts = fetchAllPosts;
 /**
  * Fetches a post by ID that was created by a user.
  * @param {Object} user - The user object.
@@ -29,11 +33,12 @@ const fetchAllPosts = (user) => __awaiter(void 0, void 0, void 0, function* () {
  * @throws {NotFoundError} If the post is not found.
  */
 const fetchPostById = (user, id) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield Post.findOne({ postedBy: user._id, _id: id });
+    const post = yield posts_model_1.Post.findOne({ postedBy: user._id, _id: id });
     if (!post)
-        throw new NotFoundError("post not found!");
+        throw new error_1.NotFoundError("post not found!");
     return post;
 });
+exports.fetchPostById = fetchPostById;
 /**
  * Creates a new post.
  * @param {Object} body - The request body.
@@ -41,9 +46,10 @@ const fetchPostById = (user, id) => __awaiter(void 0, void 0, void 0, function* 
  * @returns {Promise<Object>} The post object.
  */
 const addPost = (body, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield Post.create(Object.assign(Object.assign({}, body), { postedBy: user._id }));
+    const post = yield posts_model_1.Post.create(Object.assign(Object.assign({}, body), { postedBy: user._id }));
     return post;
 });
+exports.addPost = addPost;
 /**
  * Updates a post by ID.
  * @param {Object} body - The request body.
@@ -51,13 +57,14 @@ const addPost = (body, user) => __awaiter(void 0, void 0, void 0, function* () {
  * @returns {Promise<void>}
  * @throws {NotFoundError} If the post is not found.
  */
-const updatePost = (body, params) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield Post.findById(params.id);
+const updatePost = (body, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_model_1.Post.findById(id);
     if (!post) {
-        throw new NotFoundError("post not found!");
+        throw new error_1.NotFoundError("post not found!");
     }
     yield post.updateOne(Object.assign({}, body), { runValidators: true });
 });
+exports.updatePost = updatePost;
 /**
  * Deletes a post by ID.
  * @param {Object} user - The user object.
@@ -65,12 +72,13 @@ const updatePost = (body, params) => __awaiter(void 0, void 0, void 0, function*
  * @returns {Promise<void>}
  * @throws {NotFoundError} If the post is not found.
  */
-const deletePost = (user, params) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield Post.findOne({ postedBy: user._id, _id: params.id });
+const deletePost = (user, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_model_1.Post.findOne({ postedBy: user._id, _id: id });
     if (!post)
-        throw new NotFoundError("post not found!");
+        throw new error_1.NotFoundError("post not found!");
     post.deleteOne();
 });
+exports.deletePost = deletePost;
 /**
  * Adds a comment to a post by ID.
  * @param {Object} params - The request parameters.
@@ -79,34 +87,27 @@ const deletePost = (user, params) => __awaiter(void 0, void 0, void 0, function*
  * @returns {Promise<Object>} The updated post object.
  * @throws {NotFoundError} If the post is not found.
  */
-const addComment = (params, body, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield Post.findById(params.id);
+const addComment = (id, body, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_model_1.Post.findById(id);
     if (!post) {
-        throw new NotFoundError("post not found!");
+        throw new error_1.NotFoundError("post not found!");
     }
     post.comments.push({ comment: body.comment, commentBy: user._id });
     yield post.save();
     return post;
 });
+exports.addComment = addComment;
 /**
  * Fetches all comments on a post by ID.
  * @param {Object} params - The request parameters.
  * @returns {Promise<Array>} An array of comment objects.
  * @throws {NotFoundError} If there are no comments on the post.
  */
-const fetchAllCommentsOnPost = (params) => __awaiter(void 0, void 0, void 0, function* () {
-    const { comments } = yield Post.findById(params.id).populate("comments.commentBy", { _id: 0, username: 1 });
-    if (comments.length === 0) {
-        throw new NotFoundError("There is no comment on post currently!");
+const fetchAllCommentsOnPost = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_model_1.Post.findById(id).populate("comments.commentBy", { _id: 0, username: 1 });
+    if (!post || post.comments.length === 0) {
+        throw new error_1.NotFoundError("There is no comment on post currently!");
     }
-    return comments;
+    return post.comments;
 });
-module.exports = {
-    addPost,
-    updatePost,
-    fetchAllPosts,
-    fetchPostById,
-    deletePost,
-    addComment,
-    fetchAllCommentsOnPost,
-};
+exports.fetchAllCommentsOnPost = fetchAllCommentsOnPost;

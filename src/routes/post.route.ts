@@ -1,7 +1,8 @@
 import express from "express";
+import * as postController from "../controllers/post.controller";
+import { auth } from "../middlewares/auth";
+
 const router = express.Router();
-const postController = require("../controllers/post.controller");
-const auth = require("../middlewares/auth");
 
 router.get("/", auth, postController.fetchAllPosts);
 
@@ -18,4 +19,4 @@ router.patch("/:id/comment", auth, postController.addComment);
 
 router.get("/:id/comment", auth, postController.fetchAllCommentsOnPost);
 
-module.exports = router;
+export default router;

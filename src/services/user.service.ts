@@ -1,4 +1,5 @@
-import { User, Post, IUser } from "../models";
+import { User, IUser } from "../models/users.model";
+import { Post } from "../models/posts.model";
 import bcrypt from "bcryptjs";
 import { UnauthorizedError, BadRequest } from "../error";
 
@@ -31,7 +32,7 @@ export const loginUser = async (email: string, password: string) => {
  * @returns {Promise<void>}
  */
 export const logoutUser = async (user: IUser, token: string) => {
-  user.tokens = user.tokens.filter((tokenObj) => {
+  user.tokens = user.tokens?.filter((tokenObj) => {
     tokenObj.token != token;
   });
   await user.save();

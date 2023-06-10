@@ -1,21 +1,11 @@
-import mongoose from "mongoose";
-// export interface IPost extends Document {
-//   caption: string;
-//   location: string;
-//   tags: string[];
-//   comments: {
-//     comment: {
-//       type: string;
-//     };
-//     commentBy: {
-//       type: string;
-//     };
-//     commentDate: {
-//       type: Date;
-//     };
-//   }[];
-// }
-export const postSchema = new mongoose.Schema({
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Post = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
+const postSchema = new mongoose_1.default.Schema({
     caption: {
         type: String,
         trim: true,
@@ -35,7 +25,7 @@ export const postSchema = new mongoose.Schema({
                 type: String,
             },
             commentBy: {
-                type: mongoose.Schema.Types.ObjectId,
+                type: mongoose_1.default.Schema.Types.ObjectId,
                 require: true,
                 ref: "User",
             },
@@ -46,9 +36,9 @@ export const postSchema = new mongoose.Schema({
         },
     ],
     postedBy: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         require: true,
         ref: "User",
     },
 }, { timestamps: true });
-export const Post = mongoose.model("Post", postSchema);
+exports.Post = mongoose_1.default.model("Post", postSchema);
