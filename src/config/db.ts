@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export function connectToDB(){
   mongoose
-    .connect(process.env.CONNECTION_STRING as string)
+    .connect(process.env.DB as string)
     .then(() => {
       console.log("database connected succesfully");
     })

@@ -1,0 +1,30 @@
+version: "3"
+services:
+    mongodb:
+        container_name: mongodb
+        image: mongo
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+        env_file: .env
+        ports:
+            - 27018:27017
+        volumes:
+            - mongodb_volume:/data/db
+
+    app:
+        container_name: express_app
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - 3000:3000
+        restart: always
+        environment:
+            PORT: 3000
+            DB: mongodb://${DB_USER}:${DB_PASS}@mongodb:27017
+        depends_on:
+            - mongodb
+
+volumes:
+    mongodb_volume:

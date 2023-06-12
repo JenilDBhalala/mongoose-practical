@@ -25,7 +25,6 @@ app.use((error: Error & {status? : number}, req: Request, res: Response, next: N
 
 //server configuration
 
-console.log("hello2")
 connectToDB()
 const port = process.env.PORT || 3002;
 
