@@ -25,9 +25,10 @@ app.use((error, req, res, next) => {
 });
 
 //server configuration
-const host = process.env.HOST;
 const port = process.env.PORT || 3002
 
-app.listen(port, host, () => {
-    console.log(`app is listening on http://${host}:${port}`);
-})
+app.listen(port, () => {
+  console.log(`app is listening on http://localhost:${port}`);
+});
+
+module.exports = app;
