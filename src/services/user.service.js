@@ -33,10 +33,11 @@ const loginUser = async (email, password) => {
  * @returns {Promise<void>}
  */
 const logoutUser = async (user, token) => {
-    user.tokens = user.tokens.filter((token) => { token.token != token });
-    await user.save();
-}
-
+  user.tokens = user.tokens.filter((token) => {
+    token.token != token;
+  });
+  return await user.save();
+};
 
 /**
  * Creates a new user profile with the given data.
@@ -44,11 +45,10 @@ const logoutUser = async (user, token) => {
  * @returns {Promise<{user: Object, token: string}>} The newly created user profile and authentication token.
  */
 const createProfile = async (body) => {
-    const user = await User.create(body);
-    const token = await user.generateAuthToken()
-    return { user, token };
-}
-
+  const user = await User.create(body);
+  const token = await user.generateAuthToken();
+  return { user, token };
+};
 
 /**
  * Update a user's profile with the given data
@@ -58,23 +58,22 @@ const createProfile = async (body) => {
  * @returns {Promise<Object>} The updated user object
  */
 const updateProfile = async (body, user) => {
-    const allowedUpdates = ['username', 'email', 'password', 'age'];
-    const updates = Object.keys(body);
+  const allowedUpdates = ["username", "password", "age"];
+  const updates = Object.keys(body);
 
-    const isValidUpdate = updates.every((update) => allowedUpdates.includes(update));
+  const isValidUpdate = updates.every((update) =>
+    allowedUpdates.includes(update)
+  );
 
-    if (!isValidUpdate) {
-        throw BadRequest('Invalid Update')
-    }
+  if (!isValidUpdate) {
+    throw new BadRequest("Invalid Update");
+  }
 
-    updates.forEach((update) => {
-        user[update] = body[update];
-    })
-    await user.save();
-
-    return user;
-}
-
+  updates.forEach((update) => {
+    user[update] = body[update];
+  });
+  return await user.save();
+};
 
 /**
  * Deletes user's profile and all posts made by that user
@@ -82,9 +81,10 @@ const updateProfile = async (body, user) => {
  * @returns {Promise<void>} A Promise that resolves when the user and posts are deleted
  */
 const deleteProfile = async (user) => {
-    await Post.deleteMany({ postedBy: user._id })
-    await User.deleteOne({ email: user.email })
-}
+  await Post.deleteMany({ postedBy: user._id });
+  await User.deleteOne({ email: user.email });
+  return user;
+};
 
 
 module.exports = {

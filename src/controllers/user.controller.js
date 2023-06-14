@@ -1,43 +1,35 @@
 const userService = require('../services/user.service');
 
 const loginUser = async (req, res, next) => {
-    try {
-        const userData = await userService.loginUser(req.body.email, req.body.password);
-        res.status(200).json({ userData })
-    }
-    catch (err) {
-        next(err)
-    }
-}
-
+  try {
+    const data = await userService.loginUser(req.body.email, req.body.password);
+    res.status(200).json({ data });
+  } catch (err) {
+    next(err);
+  }
+};
 
 const logoutUser = async (req, res, next) => {
-    try {
-        await userService.logoutUser(req.user);
-        res.status(200).json({ message: 'user logged out successfully' })
-    }
-    catch (err) {
-        next(err)
-    }
-}
-
+  try {
+    await userService.logoutUser(req.user);
+    res.status(200).json({ message: "user logged out successfully" });
+  } catch (err) {
+    next(err);
+  }
+};
 
 const createProfile = async (req, res, next) => {
-    try {
-        const userData = await userService.createProfile(req.body);
-        res.status(201).json({ userData });
-    }
-    catch (err) {
-        console.log("sdflksdflkjksdfdsffg-0---------sd-f4-3-4w5-34-")
-        next(err)
-    }
-}
-
+  try {
+    const data = await userService.createProfile(req.body);
+    res.status(201).json({ data });
+  } catch (err) {
+    next(err);
+  }
+};
 
 const viewProfile = async (req, res, next) => {
-    res.status(200).json({ data: req.user })
-}
-
+  res.status(200).json({ data: req.user });
+};
 
 const updateProfile = async (req, res, next) => {
     try{
