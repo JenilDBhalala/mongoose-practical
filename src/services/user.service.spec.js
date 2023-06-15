@@ -5,7 +5,7 @@ const User = require("../models/users.model");
 beforeAll(async () => {
   await connectToDB();
   await User.deleteMany({});
-});
+}, 10000);
 
 describe("User Services", () => {
   let user, token;
@@ -119,7 +119,6 @@ describe("User Services", () => {
     }
   });
 
-  
   test("Should find user by username", async () => {
     const query = {
       search: "jenil",
@@ -149,7 +148,6 @@ describe("User Services", () => {
       expect(error.message).toEqual("No users found!");
     }
   });
-
 
   test("Should delete profile", async () => {
     const result = await userService.deleteProfile(user);

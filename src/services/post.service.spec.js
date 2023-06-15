@@ -8,7 +8,7 @@ beforeAll(async () => {
   await connectToDB();
   await Post.deleteMany({});
   await User.deleteMany({});
-});
+}, 10000);
 
 describe("Post Services", () => {
   let user;
@@ -34,7 +34,6 @@ describe("Post Services", () => {
     });
 
     user = result.user;
-    token = result.token;
   });
 
   //   test("Should create post", async () => {
