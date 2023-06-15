@@ -69,6 +69,30 @@ const fetchAllCommentsOnPost = async (req, res, next) => {
   }
 };
 
+
+//finding latest comments using aggregate pipeline with pagination, sorting and projection
+const findLatestComments = async (req, res, next) => {
+  try {
+      const comments = await postService.findLatestComments(req.params.id, req.query)
+      res.status(200).json({ data: comments })
+  }
+  catch (err) {
+      next(err)
+  }
+}
+
+//finding counts of post with specific tag 
+const countOfPosts = async (req, res, next) => {
+  try {
+      const posts = await postService.countOfPosts();
+      res.status(200).json({ data: posts });
+  }
+  catch (err) {
+      next(err)
+  }
+}
+
+
 module.exports = {
     addPost,
     updatePost,
@@ -76,5 +100,7 @@ module.exports = {
     fetchPostById,
     deletePost,
     addComment,
-    fetchAllCommentsOnPost
+    fetchAllCommentsOnPost,
+    findLatestComments,
+    countOfPosts
 }

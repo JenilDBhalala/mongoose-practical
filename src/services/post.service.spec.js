@@ -210,6 +210,22 @@ describe("Post Services", () => {
       })
     );
   });
+
+  test("Should display there is no comment on post", async () => {
+    try {
+      await postService.fetchAllCommentsOnPost(posts[0]._id);
+    } catch (error) {
+      expect(error.message).toEqual("There is no comment on post currently!");
+    }
+  });
+
+  test("Should view 2 latest comments on post", async () => {
+    const query = { skip: 0, limit: 2 };
+
+    const comments = await postService.findLatestComments(posts[1]._id, query);
+
+    expect(comments).toHaveLength(2);
+  });
 });
 
 afterAll(async () => {

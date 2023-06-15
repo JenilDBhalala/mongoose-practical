@@ -53,11 +53,21 @@ const deleteProfile = async (req, res, next) => {
 }
 
 
+const searchByUsername = async (req, res, next) => {
+  try {
+    const users = await userService.searchByUsername(req.query);
+    res.status(200).json({ data: users });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
-    createProfile,
-    viewProfile,
-    updateProfile,
-    deleteProfile,
-    loginUser,
-    logoutUser
-}
+  createProfile,
+  viewProfile,
+  updateProfile,
+  deleteProfile,
+  loginUser,
+  logoutUser,
+  searchByUsername,
+};

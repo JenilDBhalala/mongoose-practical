@@ -1,7 +1,7 @@
 const User = require('../models/users.model')
 const Post = require('../models/posts.model')
 const bcrypt = require('bcryptjs')
-const { UnauthorizedError, BadRequest } = require('../error')
+const { UnauthorizedError, BadRequest, NotFoundError } = require("../error");
 
 /**
  * Logs in a user with the provided email and password.
@@ -11,20 +11,19 @@ const { UnauthorizedError, BadRequest } = require('../error')
  * @throws {UnauthorizedError} - If the email or password is incorrect.
  */
 const loginUser = async (email, password) => {
-    const user = await User.findOne({ email });
-    if (!user) {
-        throw new UnauthorizedError('Invalid Credentials');
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new UnauthorizedError("Invalid Credentials");
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) {
-        throw new UnauthorizedError('Invalid Credentials');
-    }
+  if (!isMatch) {
+    throw new UnauthorizedError("Invalid Credentials");
+  }
 
-    const token = await user.generateAuthToken();
-    return { user, token };
-}
-
+  const token = await user.generateAuthToken();
+  return { user, token };
+};
 
 /**
  * Logout user
@@ -86,11 +85,36 @@ const deleteProfile = async (user) => {
   return user;
 };
 
+/**
+ * Search for users by their username.
+ * @param {Object} query - The search query object.
+ * @returns {Promise<Array>} An array of user objects that match the search query.
+ * @throws {NotFoundError} If no users are found.
+ */
+const searchByUsername = async (query) => {
+  const users = await User.find(
+    {
+      username: { $regex: query.search, $options: "i" },
+    },
+    {
+      createdAt: 0,
+      updatedAt: 0,
+      __v: 0,
+    }
+  );
+
+  if (users.length === 0) {
+    throw new NotFoundError("No users found!");
+  }
+
+  return users;
+};
 
 module.exports = {
-    createProfile,
-    updateProfile,
-    deleteProfile,
-    loginUser,
-    logoutUser
-}
+  createProfile,
+  updateProfile,
+  deleteProfile,
+  loginUser,
+  logoutUser,
+  searchByUsername,
+};

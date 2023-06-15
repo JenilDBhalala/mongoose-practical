@@ -119,6 +119,38 @@ describe("User Services", () => {
     }
   });
 
+  
+  test("Should find user by username", async () => {
+    const query = {
+      search: "jenil",
+    };
+
+    const result = await userService.searchByUsername(query);
+
+    expect(result).toHaveLength(1);
+
+    expect(result).toEqual([
+      expect.objectContaining({
+        username: "jenil123",
+        email: "jenil89@gmail.com",
+        age: 21,
+      }),
+    ]);
+  });
+
+  test("Should not find user by username", async () => {
+    const query = {
+      search: "akshay",
+    };
+
+    try {
+      await userService.searchByUsername(query);
+    } catch (error) {
+      expect(error.message).toEqual("No users found!");
+    }
+  });
+
+
   test("Should delete profile", async () => {
     const result = await userService.deleteProfile(user);
 

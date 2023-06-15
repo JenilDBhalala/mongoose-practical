@@ -13,9 +13,14 @@ router.patch('/:id', auth, postController.updatePost)
 
 router.delete('/:id', auth, postController.deletePost)
 
-//routes related to comments
-router.patch('/:id/comment', auth, postController.addComment)
+router.get("/posts/", postController.countOfPosts);
 
-router.get('/:id/comment', auth, postController.fetchAllCommentsOnPost)
+//routes related to comments
+router.patch("/:id/comment", auth, postController.addComment);
+
+router.get("/:id/comment", auth, postController.fetchAllCommentsOnPost);
+
+router.get("/posts/:id/comment", auth, postController.findLatestComments);
+
 
 module.exports = router;

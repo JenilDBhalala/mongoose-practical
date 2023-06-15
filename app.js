@@ -5,7 +5,6 @@ require("dotenv").config();
 //importing routes
 const userRoutes = require("./src/routes/user.route");
 const postRoutes = require("./src/routes/post.route");
-const queryRoutes = require("./src/routes/query.route");
 
 const app = express();
 app.use(morgan("dev"));
@@ -16,7 +15,6 @@ app.use(express.urlencoded({ extended: false }));
 //routes
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
-app.use("/queries", queryRoutes);
 
 //error handler middleware
 app.use((error, req, res, next) => {
