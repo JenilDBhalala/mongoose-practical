@@ -2,32 +2,32 @@ const express = require('express');
 const morgan = require('morgan')
 require('dotenv').config();
 require('./config/db')
+const connectToDB = require("./config/db");
 
 //importing routes
-const userRoutes = require('./src/routes/user.route')
-const postRoutes = require('./src/routes/post.route')
-const queryRoutes = require('./src/routes/query.route')
+const userRoutes = require("./src/routes/user.route");
+const postRoutes = require("./src/routes/post.route");
 
 const app = express();
-app.use(morgan('dev'))
+app.use(morgan("dev"));
 
 app.use(express.json());
-app.use(express.urlencoded({extended : false}))
+app.use(express.urlencoded({ extended: false }));
 
 //routes
-app.use('/users', userRoutes);
-app.use('/posts', postRoutes);
-app.use('/queries', queryRoutes);
+app.use("/users", userRoutes);
+app.use("/posts", postRoutes);
 
 //error handler middleware
 app.use((error, req, res, next) => {
-    res.status(error.status || 400).json({ error: error.message });
+  res.status(error.status || 400).json({ error: error.message });
 });
 
-//server configuration
-const host = process.env.HOST;
-const port = process.env.PORT || 3002
+const port = process.env.PORT || 3002;
 
-app.listen(port, host, () => {
-    console.log(`app is listening on http://${host}:${port}`);
-})
+(async () => {
+  await connectToDB();
+  app.listen(port, () => {
+    console.log(`app is listening on http://localhost:${port}`);
+  });
+})();

@@ -15,4 +15,6 @@ router.patch('/me',auth,userController.updateProfile)
 
 router.delete('/me', auth, userController.deleteProfile)
 
+router.get("/", userController.searchByUsername);
+
 module.exports = router;

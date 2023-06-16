@@ -87,10 +87,37 @@ const deleteProfile = async (user) => {
 }
 
 
+/**
+ * Search for users by their username.
+ * @param {Object} query - The search query object.
+ * @returns {Promise<Array>} An array of user objects that match the search query.
+ * @throws {NotFoundError} If no users are found.
+ */
+const searchByUsername = async (query) => {
+    const users = await User.find(
+        {
+            username: { $regex: query.search, $options: 'i' }
+        },
+        {
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0
+        }
+    );
+
+    if (users.length === 0) {
+        throw new NotFoundError('No users found!');
+    }
+
+    return users;
+}
+
+
 module.exports = {
     createProfile,
     updateProfile,
     deleteProfile,
     loginUser,
-    logoutUser
+    logoutUser,
+    searchByUsername
 }

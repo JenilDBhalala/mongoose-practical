@@ -18,4 +18,8 @@ router.patch('/:id/comment', auth, postController.addComment)
 
 router.get('/:id/comment', auth, postController.fetchAllCommentsOnPost)
 
+router.get("/:id/comment", auth, postController.findLatestComments);
+
+router.get("/", postController.countOfPosts);
+
 module.exports = router;
