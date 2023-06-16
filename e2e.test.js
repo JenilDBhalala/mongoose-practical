@@ -1,11 +1,13 @@
 const request = require("supertest");
 const app = require("./app");
 const { connectToDB, disconnectDB } = require("./config/db");
+const Post = require("./src/models/posts.model");
 const User = require("./src/models/users.model");
 
 beforeAll(async () => {
   await connectToDB();
   await User.deleteMany({});
+  await Post.deleteMany({});
 }, 10000);
 
 describe("User handlers", () => {
@@ -26,7 +28,7 @@ describe("User handlers", () => {
       });
   });
 
-  test("Should create duplicate user", async () => {
+  test("Should give error for creating duplicate user", async () => {
     await request(app)
       .post("/users/auth/signup")
       .send({
@@ -45,6 +47,13 @@ describe("User handlers", () => {
       .expect(200);
   });
 
+  test("Should not fetch user profile because of modified token", async () => {
+    await request(app)
+      .get("/users/me")
+      .set("Authorization", `Bearer ${token} modified`)
+      .expect(400);
+  });
+
   test("Should update user profile", async () => {
     await request(app)
       .patch("/users/me")
@@ -54,6 +63,16 @@ describe("User handlers", () => {
       })
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
+  });
+
+  test("Should not update user profile with invalid update field", async () => {
+    await request(app)
+      .patch("/users/me")
+      .send({
+        email: "jenil89@gmail.com",
+      })
+      .set("Authorization", `Bearer ${token}`)
+      .expect(400);
   });
 
   test("Should logout user", async () => {
@@ -74,6 +93,16 @@ describe("User handlers", () => {
       .then((response) => {
         token = response.body.data.token;
       });
+  });
+
+  test("Should not sign in a user with wrong credentials", async () => {
+    await request(app)
+      .post("/users/auth/login")
+      .send({
+        email: "jenil89@gmail.com",
+        password: "jenil12",
+      })
+      .expect(401);
   });
 
   test("Should delete user profile", async () => {
