@@ -20,6 +20,6 @@ router.get('/:id/comment', auth, postController.fetchAllCommentsOnPost)
 
 router.get("/:id/comment", auth, postController.findLatestComments);
 
-router.get("/", postController.countOfPosts);
+router.get("/count/tags", postController.countOfPosts);
 
 module.exports = router;
